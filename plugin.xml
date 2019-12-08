@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="taskview"
+         name="Task List View"
+         point="pt.iscte.pidesco.view">
+      <view
+            class="pa.iscde.tasklist.TaskListView"
+            icon="tasklist.png">
+      </view>
+   </extension>
+
+</plugin>
