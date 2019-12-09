@@ -12,11 +12,14 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -46,7 +49,29 @@ public class TaskListView implements PidescoView {
 
 		instance = this;
 
-		viewArea.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+
+	final List list = new List (viewArea, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+		for (int i=0; i<128; i++) list.add ("Item " + i);
+		Rectangle clientArea = viewArea.getClientArea ();
+		list.setBounds (clientArea.x, clientArea.y, 100, 100);
+		list.addListener (SWT.Selection, e -> {
+			String string = "";
+			int [] selection = list.getSelectionIndices ();
+			for (int i=0; i<selection.length; i++) string += selection [i] + " ";
+			System.out.println ("Selection={" + string + "}");
+		});
+		list.addListener (SWT.DefaultSelection, e -> {
+			String string = "";
+			int [] selection = list.getSelectionIndices ();
+			for (int i=0; i<selection.length; i++) string += selection [i] + " ";
+			System.out.println ("DefaultSelection={" + string + "}");
+		});
+	
+		
+		//viewArea.setLayout(new RowLayout(SWT.HORIZONTAL));
+		
+
 		BundleContext context = Activator.getContext();
 		ServiceReference<ProjectBrowserServices> serviceReference = context
 				.getServiceReference(ProjectBrowserServices.class);
@@ -65,6 +90,9 @@ public class TaskListView implements PidescoView {
 
 		Button button = new Button(viewArea, SWT.PUSH);
 		button.setText("Description");
+		
+		Button button2 = new Button(viewArea, SWT.PUSH);
+		button2.setText("Description");
 
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
