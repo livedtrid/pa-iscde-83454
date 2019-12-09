@@ -93,7 +93,7 @@ public class TaskListView implements PidescoView {
 		});
 		
 		
-		root = Activator //.getBrowServ().getRootPackage().getFile().getPath();
+		root = Activator. //.getBrowServ().getRootPackage().getFile().getPath();
 		readAllFiles(new File(rootName));
 		for (int i = 0; i < titles.length; i++) {
 			table.getColumn(i).pack();
