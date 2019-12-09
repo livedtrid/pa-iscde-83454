@@ -1,6 +1,12 @@
 package pa.iscde.tasklist;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.Collator;
+import java.util.Locale;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
@@ -20,6 +26,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -35,51 +42,42 @@ import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserServices;
 
 public class TaskListView implements PidescoView {
 
+	Table table;
+	private String root;
+	
 	public TaskListView() {
 		// TODO Auto-generated constructor stub
-	}
-
-	private static TaskListView instance;
-
-	public static TaskListView getInstance() {
-
-		return instance;
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
 	public void createContents(Composite viewArea, Map<String, Image> imageMap) {
 
-		instance = this;
-
-
-
 		viewArea.setLayout(new GridLayout());
-		Table table = new Table (viewArea, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
-		table.setLinesVisible (true);
-		table.setHeaderVisible (true);
+		table = new Table(viewArea, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data.heightHint = 200;
 		table.setLayoutData(data);
-		String[] titles = {"Description", "Project", "File", "Line"};
-		for (int i=0; i<titles.length; i++) {
-			TableColumn column = new TableColumn (table, SWT.NONE);
-			column.setText (titles [i]);
+		String[] titles = { "Description", "Project", "File", "Line" };
+		for (int i = 0; i < titles.length; i++) {
+			TableColumn column = new TableColumn(table, SWT.NONE);
+			column.setText(titles[i]);
 		}
 		int count = 10;
-		for (int i=0; i<count; i++) {
-			TableItem item = new TableItem (table, SWT.NONE);
-			item.setText (0, "TODO: test");
-			item.setText (1, "Test Project");
-			item.setText (2, "Test.java");
-			item.setText (3, "line " + i);
+		for (int i = 0; i < count; i++) {
+			TableItem item = new TableItem(table, SWT.NONE);
+			item.setText(0, "TODO: test");
+			item.setText(1, "Test Project");
+			item.setText(2, "Test.java");
+			item.setText(3, "line " + i);
 		}
-		for (int i=0; i<titles.length; i++) {
-			table.getColumn (i).pack ();
+		for (int i = 0; i < titles.length; i++) {
+			table.getColumn(i).pack();
 		}	
-		
-		//viewArea.setLayout(new RowLayout(SWT.HORIZONTAL));
-		
+
+		// viewArea.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		BundleContext context = Activator.getContext();
 		ServiceReference<ProjectBrowserServices> serviceReference = context
@@ -93,13 +91,20 @@ public class TaskListView implements PidescoView {
 				viewArea.layout();
 			}
 		});
+		
+		
+		root = Activator //.getBrowServ().getRootPackage().getFile().getPath();
+		readAllFiles(new File(rootName));
+		for (int i = 0; i < titles.length; i++) {
+			table.getColumn(i).pack();
+		}
 
 		ServiceReference<JavaEditorServices> serviceReference2 = context.getServiceReference(JavaEditorServices.class);
 		JavaEditorServices javaServ = context.getService(serviceReference2);
 
 		Button button = new Button(viewArea, SWT.PUSH);
 		button.setText("Description");
-		
+
 		Button button2 = new Button(viewArea, SWT.PUSH);
 		button2.setText("Description");
 
@@ -114,7 +119,6 @@ public class TaskListView implements PidescoView {
 			}
 		});
 
-		
 		/// Exemplo para utilizar extensões
 		/*
 		 * IExtensionRegistry reg = Platform.getExtensionRegistry();
@@ -139,5 +143,46 @@ public class TaskListView implements PidescoView {
 		 * 
 		 */
 	}
+	
+	
+	private void fileReader(File file) {
+		for (File f : file.listFiles(new FileFilter() {
+
+			@Override
+			public boolean accept(File pathname) {
+				if (pathname.isDirectory())
+					return true;
+				String name = pathname.getName();
+				int index = name.lastIndexOf(".");
+				if (index == -1)
+					return false;
+				return name.substring(index + 1).equals("java");
+			}
+		})) {
+			if (f.isFile())
+				updateTableView(f);
+			else
+				fileReader(f);
+		}
+	}
+	
+	public void updateTableView(File file) {
+		//CommentHandler commentHandler = new CommentHandler();
+		try (BufferedReader buffer = new BufferedReader(new FileReader(file))) {
+			String line;
+			int count = 0;
+		
+			while ((line = buffer.readLine()) != null) {
+				count++;
+			System.out.println("Line " + line);
+				
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	
 
 }
