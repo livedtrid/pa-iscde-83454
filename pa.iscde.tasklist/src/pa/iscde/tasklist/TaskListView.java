@@ -20,6 +20,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -51,23 +54,29 @@ public class TaskListView implements PidescoView {
 
 
 
-	final List list = new List (viewArea, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		for (int i=0; i<128; i++) list.add ("Item " + i);
-		Rectangle clientArea = viewArea.getClientArea ();
-		list.setBounds (clientArea.x, clientArea.y, 100, 100);
-		list.addListener (SWT.Selection, e -> {
-			String string = "";
-			int [] selection = list.getSelectionIndices ();
-			for (int i=0; i<selection.length; i++) string += selection [i] + " ";
-			System.out.println ("Selection={" + string + "}");
-		});
-		list.addListener (SWT.DefaultSelection, e -> {
-			String string = "";
-			int [] selection = list.getSelectionIndices ();
-			for (int i=0; i<selection.length; i++) string += selection [i] + " ";
-			System.out.println ("DefaultSelection={" + string + "}");
-		});
-	
+		viewArea.setLayout(new GridLayout());
+		Table table = new Table (viewArea, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
+		table.setLinesVisible (true);
+		table.setHeaderVisible (true);
+		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
+		data.heightHint = 200;
+		table.setLayoutData(data);
+		String[] titles = {"Description", "Project", "File", "Line"};
+		for (int i=0; i<titles.length; i++) {
+			TableColumn column = new TableColumn (table, SWT.NONE);
+			column.setText (titles [i]);
+		}
+		int count = 10;
+		for (int i=0; i<count; i++) {
+			TableItem item = new TableItem (table, SWT.NONE);
+			item.setText (0, "TODO: test");
+			item.setText (1, "Test Project");
+			item.setText (2, "Test.java");
+			item.setText (3, "line " + i);
+		}
+		for (int i=0; i<titles.length; i++) {
+			table.getColumn (i).pack ();
+		}	
 		
 		//viewArea.setLayout(new RowLayout(SWT.HORIZONTAL));
 		
