@@ -6,7 +6,11 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: pa.iscde.tasklist.Activator
 Require-Bundle: org.eclipse.core.runtime,
  pt.iscte.pidesco;bundle-version="0.1.0",
- org.eclipse.swt;bundle-version="3.112.0"
+ org.eclipse.swt;bundle-version="3.108.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: pa.iscde.tasklist
 Bundle-ActivationPolicy: lazy
+Import-Package: org.eclipse.jface.text,
+ pt.iscte.pidesco.javaeditor.service,
+ pt.iscte.pidesco.projectbrowser.model,
+ pt.iscte.pidesco.projectbrowser.service
