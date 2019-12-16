@@ -157,7 +157,7 @@ public class TaskListView implements PidescoView {
 	}
 	
 	public void updateTableView(File file) {
-		//CommentHandler commentHandler = new CommentHandler();
+		
 		try (BufferedReader buffer = new BufferedReader(new FileReader(file))) {
 			String line;
 			int count = 0;
