@@ -1,14 +1,63 @@
 package pa.iscde.tasklist;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.eclipse.jface.text.MultiStringMatcher.Match;
+
+
 
 public class TaskManager {
 
+	static class Match {
+        int start;
+        String text;
+	}
+	
+
 	private Set<Task> tasks = new HashSet<Task>();
+
+	static List<Match> commentMatches = new ArrayList<Match>();
 
 	// Metodo para encontrar os comentários e devolver as tasks
 	public void findComments(String s) {
+		String text = s;
+
+		Pattern commentsPattern = Pattern.compile("(//.*?$)|(/\\*.*?\\*/)", Pattern.MULTILINE | Pattern.DOTALL);
+		Pattern stringsPattern = Pattern.compile("(\".*?(?<!\\\\)\")");
+
+		Matcher commentsMatcher = commentsPattern.matcher(text);
+		while (commentsMatcher.find()) {
+			Match match = new Match();
+			match.start = commentsMatcher.start();
+			match.text = commentsMatcher.group();
+			commentMatches.add(match);
+		}
+
+		List<Match> commentsList = new ArrayList<Match>();
+
+		Matcher stringsMatcher = stringsPattern.matcher(text);
+		while (stringsMatcher.find()) {
+			for (Match comment : commentMatches) {
+				if (comment.start > stringsMatcher.start() && comment.start < stringsMatcher.end())
+					commentsList.add(comment);
+			}
+		}
+	//	for (Match comment : commentsList)
+	//	commentMatches.remove(comment);
+
+		for (Match comment : commentMatches)
+			text = text.replace(comment.text, " ");
+
+		System.out.println(text);
 	}
 
 }
+
+

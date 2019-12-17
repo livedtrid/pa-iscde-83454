@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ext
+Bundle-SymbolicName: pa.iscde.tasklist.ext
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: pa.iscde.tasklist.ext.Activator
+Require-Bundle: org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: pa.iscde.tasklist.ext
+Bundle-ActivationPolicy: lazy
