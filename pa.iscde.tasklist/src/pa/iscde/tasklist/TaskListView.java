@@ -3,6 +3,7 @@ package pa.iscde.tasklist;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
@@ -156,23 +157,33 @@ public class TaskListView implements PidescoView {
 		}
 	}
 	
-	public void updateTableView(File file) {
-		
+	public void updateTableView(File file) {	 
+		 
 		TaskManager taskManager = new TaskManager();
 		
 		try (BufferedReader buffer = new BufferedReader(new FileReader(file))) {
 			String line;
+			StringBuilder sb = new StringBuilder();
+			
+
+
 			int count = 0;
-		
 			while ((line = buffer.readLine()) != null) {
+				
+		        sb.append(line);
+		        sb.append(System.lineSeparator());
 				count++;
-		
-			taskManager.findComments(line);
 				
 			}
+			
+			 String everything = sb.toString();
+			taskManager.findComments(everything);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	
+	
 
 	}
 	

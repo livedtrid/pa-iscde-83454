@@ -9,21 +9,20 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.jface.text.MultiStringMatcher.Match;
-
-
+//import org.eclipse.jface.text.MultiStringMatcher.Match;
 
 public class TaskManager {
 
 	static class Match {
-        int start;
-        String text;
+		int start;
+		String text;
 	}
-	
 
 	private Set<Task> tasks = new HashSet<Task>();
 
 	static List<Match> commentMatches = new ArrayList<Match>();
+
+	static List<String> comments = new ArrayList<String>();
 
 	// Metodo para encontrar os comentários e devolver as tasks
 	public void findComments(String s) {
@@ -49,15 +48,20 @@ public class TaskManager {
 					commentsList.add(comment);
 			}
 		}
-	//	for (Match comment : commentsList)
-	//	commentMatches.remove(comment);
+		 for (Match comment : commentsList)
+		commentMatches.remove(comment);
 
-		for (Match comment : commentMatches)
-			text = text.replace(comment.text, " ");
+		for (Match comment : commentMatches) {
+			comments.add(comment.text);
+		//text = text.replace(comment.text, " ");
+		
+		}
+		
+		for (String comment : comments) {
+			
+			System.out.println(comment);
+		}
 
-		System.out.println(text);
 	}
 
 }
-
-
