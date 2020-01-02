@@ -51,22 +51,8 @@ public class TaskListView implements PidescoView {
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data.heightHint = 200;
 		table.setLayoutData(data);
-		String[] titles = { "Description", "Project", "File", "Line" };
-		for (int i = 0; i < titles.length; i++) {
-			TableColumn column = new TableColumn(table, SWT.NONE);
-			column.setText(titles[i]);
-		}
-		int count = 10;
-		for (int i = 0; i < count; i++) {
-			TableItem item = new TableItem(table, SWT.NONE);
-			item.setText(0, "TODO: test");
-			item.setText(1, "Test Project");
-			item.setText(2, "Test.java");
-			item.setText(3, "line " + i);
-		}
-		for (int i = 0; i < titles.length; i++) {
-			table.getColumn(i).pack();
-		}	
+		
+
 
 		BundleContext context = Activator.getContext();
 		ServiceReference<ProjectBrowserServices> serviceReference = context
@@ -79,14 +65,29 @@ public class TaskListView implements PidescoView {
 				new Label(viewArea, SWT.NONE).setText(element.getName());
 				viewArea.layout();
 			}
-		});
-		
+		});		
 		
 		root = projServ.getRootPackage().getFile().getPath();
 		fileReader(new File(root));
+		
+		
+		
+		String[] titles = { "Description", "Project", "File", "Line" };
+		for (int i = 0; i < titles.length; i++) {
+			TableColumn column = new TableColumn(table, SWT.NONE);
+			column.setText(titles[i]);
+		}
+		int count = 10;
+		for (int i = 0; i < count; i++) {
+			TableItem item = new TableItem(table, SWT.NONE);
+			item.setText(0, "TODO: test");
+			item.setText(1, "Test Project");
+			item.setText(2, projServ.getRootPackage().getFile().toString());
+			item.setText(3, "line " + i);
+		}
 		for (int i = 0; i < titles.length; i++) {
 			table.getColumn(i).pack();
-		}
+		}	
 
 		ServiceReference<JavaEditorServices> serviceReference2 = context.getServiceReference(JavaEditorServices.class);
 		JavaEditorServices javaServ = context.getService(serviceReference2);
@@ -163,8 +164,6 @@ public class TaskListView implements PidescoView {
 			String line;
 			StringBuilder sb = new StringBuilder();
 			
-
-
 			int count = 0;
 			while ((line = buffer.readLine()) != null) {
 				

@@ -13,6 +13,17 @@ import java.util.regex.Pattern;
 
 public class TaskManager {
 
+	static int getLine(String data, int start) {
+	    int line = 1;
+	    Pattern pattern = Pattern.compile("\n");
+	    Matcher matcher = pattern.matcher(data);
+	    matcher.region(0, start);
+	    while(matcher.find()) {
+	        line++;
+	    }
+	    return(line);
+	}
+	
 	static class Match {
 		int start;
 		String text;
@@ -36,6 +47,7 @@ public class TaskManager {
 			Match match = new Match();
 			match.start = commentsMatcher.start();
 			match.text = commentsMatcher.group();
+			System.out.println(getLine(text, commentsMatcher.start()));
 			commentMatches.add(match);
 		}
 
@@ -71,8 +83,7 @@ public class TaskManager {
 			*/
 		}
 		
-		extractTokens();
-		
+		extractTokens();		
 
 
 	}
@@ -92,6 +103,6 @@ public class TaskManager {
 		    System.out.println(matcher.group(1));
 		}
 	}
-
+	
 
 }
