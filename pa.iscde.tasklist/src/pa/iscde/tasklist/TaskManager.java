@@ -48,20 +48,50 @@ public class TaskManager {
 					commentsList.add(comment);
 			}
 		}
-		 for (Match comment : commentsList)
-		commentMatches.remove(comment);
+		for (Match comment : commentsList)
+			commentMatches.remove(comment);
 
 		for (Match comment : commentMatches) {
 			comments.add(comment.text);
-		//text = text.replace(comment.text, " ");
-		
-		}
-		
-		for (String comment : comments) {
-			
-			System.out.println(comment);
+			// text = text.replace(comment.text, " ");
+
 		}
 
+		for (String comment : comments) {
+
+			System.out.println(comment);
+			/*
+			List<String> tokenList = extractTokens(comment, "TODO")
+			
+			
+			for (String token : tokenList) {
+
+				System.out.println(token);
+			}
+			*/
+		}
+		
+		extractTokens();
+		
+
+
 	}
+
+	public void extractTokens() {
+
+		String text = "I TODO come and meet you at JOSEFININHA and all the woods";
+			List<String> tokens = new ArrayList<String>();
+		tokens.add("TODO");
+		tokens.add("JOSEFININHA");
+
+		String patternString = "\\b(" + String.join("|", tokens) + ")\\b";
+		Pattern pattern = Pattern.compile(patternString);
+		Matcher matcher = pattern.matcher(text);
+
+		while (matcher.find()) {
+		    System.out.println(matcher.group(1));
+		}
+	}
+
 
 }

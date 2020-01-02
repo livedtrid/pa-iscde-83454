@@ -68,8 +68,6 @@ public class TaskListView implements PidescoView {
 			table.getColumn(i).pack();
 		}	
 
-		// viewArea.setLayout(new RowLayout(SWT.HORIZONTAL));
-
 		BundleContext context = Activator.getContext();
 		ServiceReference<ProjectBrowserServices> serviceReference = context
 				.getServiceReference(ProjectBrowserServices.class);
