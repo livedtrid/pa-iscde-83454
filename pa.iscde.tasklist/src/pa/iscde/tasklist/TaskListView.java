@@ -164,6 +164,8 @@ public class TaskListView implements PidescoView {
 			String line;
 			StringBuilder sb = new StringBuilder();
 			
+			System.out.println(file.getName());
+			
 			int count = 0;
 			while ((line = buffer.readLine()) != null) {
 				
