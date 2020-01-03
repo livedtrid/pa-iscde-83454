@@ -68,9 +68,7 @@ public class TaskListView implements PidescoView {
 		});		
 		
 		root = projServ.getRootPackage().getFile().getPath();
-		fileReader(new File(root));
-		
-		
+		fileReader(new File(root));	
 		
 		String[] titles = { "Description", "Project", "File", "Line" };
 		for (int i = 0; i < titles.length; i++) {
@@ -81,7 +79,7 @@ public class TaskListView implements PidescoView {
 		for (int i = 0; i < count; i++) {
 			TableItem item = new TableItem(table, SWT.NONE);
 			item.setText(0, "TODO: test");
-			item.setText(1, "Test Project");
+			item.setText(1, "Project " + projServ.getRootPackage().getName());
 			item.setText(2, projServ.getRootPackage().getFile().toString());
 			item.setText(3, "line " + i);
 		}
@@ -180,9 +178,7 @@ public class TaskListView implements PidescoView {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-	
-	
+		}	
 
 	}
 	
