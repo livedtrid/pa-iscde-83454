@@ -5,10 +5,11 @@ import org.eclipse.swt.events.MouseListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.swt.SWT;
@@ -38,6 +39,8 @@ public class TaskListView implements PidescoView {
 	Table table;
 	private String root;
 
+	private Map<String, Set<Task>> taskList = new HashMap<String, Set<Task>>();
+	
 	public TaskListView() {
 		// TODO Auto-generated constructor stub
 	}
@@ -98,6 +101,8 @@ public class TaskListView implements PidescoView {
 			TableColumn column = new TableColumn(table, SWT.NONE);
 			column.setText(titles[i]);
 		}
+		
+		
 		int count = 10;
 		for (int i = 0; i < count; i++) {
 			TableItem item = new TableItem(table, SWT.NONE);
@@ -176,6 +181,7 @@ public class TaskListView implements PidescoView {
 		}
 	}
 
+
 	public void updateTableView(File file) {
 
 		TaskManager taskManager = new TaskManager();
@@ -201,7 +207,27 @@ public class TaskListView implements PidescoView {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		taskList.put(file.getPath(), extensionsHandler.processTags(commentHandler.getTaskSet()));
+		table.removeAll();
+		saveDataInTable(taskList);
+		table.redraw();
 
+	}
+	
+	private void saveDataInTable(Map<String, Set<Task>> map) {
+		for (Set<Task> s : map.values())
+			for (Task t : s) {
+				TableItem item = new TableItem(table, SWT.NONE);
+				item.setText(0, t.getToken().toString() + ": " + t.getDescription());
+				item.setText(1, "Project: " + t.getProject());
+				item.setText(2, t.getFile());
+				item.setText(4, "line " + t.getLine());
+
+			}
+		for (int i = 0; i < map.size(); i++) {
+			table.getColumn(i).pack();
+		}
 	}
 
 }
