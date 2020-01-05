@@ -198,7 +198,6 @@ public class TaskListView implements PidescoView {
 				sb.append(line);
 				sb.append(System.lineSeparator());
 				count++;
-
 			}
 
 			String everything = sb.toString();
@@ -222,10 +221,10 @@ public class TaskListView implements PidescoView {
 				item.setText(0, t.getToken().toString() + ": " + t.getDescription());
 				item.setText(1, "Project: " + t.getProject());
 				item.setText(2, t.getFile());
-				item.setText(4, "line " + t.getLine());
+				item.setText(3, "line " + t.getLine());
 
 			}
-		for (int i = 0; i < map.size(); i++) {
+		for (int i = 0; i < 3; i++) {
 			table.getColumn(i).pack();
 		}
 	}
