@@ -1,5 +1,7 @@
 package pa.iscde.tasklist;
 
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
@@ -35,7 +37,7 @@ public class TaskListView implements PidescoView {
 
 	Table table;
 	private String root;
-	
+
 	public TaskListView() {
 		// TODO Auto-generated constructor stub
 	}
@@ -51,8 +53,29 @@ public class TaskListView implements PidescoView {
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data.heightHint = 200;
 		table.setLayoutData(data);
-		
+		table.addMouseListener(new MouseListener() {
 
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+				System.out.println("OI");
+
+			}
+
+		});
 
 		BundleContext context = Activator.getContext();
 		ServiceReference<ProjectBrowserServices> serviceReference = context
@@ -65,11 +88,11 @@ public class TaskListView implements PidescoView {
 				new Label(viewArea, SWT.NONE).setText(element.getName());
 				viewArea.layout();
 			}
-		});		
-		
+		});
+
 		root = projServ.getRootPackage().getFile().getPath();
-		fileReader(new File(root));	
-		
+		fileReader(new File(root));
+
 		String[] titles = { "Description", "Project", "File", "Line" };
 		for (int i = 0; i < titles.length; i++) {
 			TableColumn column = new TableColumn(table, SWT.NONE);
@@ -85,7 +108,7 @@ public class TaskListView implements PidescoView {
 		}
 		for (int i = 0; i < titles.length; i++) {
 			table.getColumn(i).pack();
-		}	
+		}
 
 		ServiceReference<JavaEditorServices> serviceReference2 = context.getServiceReference(JavaEditorServices.class);
 		JavaEditorServices javaServ = context.getService(serviceReference2);
@@ -131,8 +154,7 @@ public class TaskListView implements PidescoView {
 		 * 
 		 */
 	}
-	
-	
+
 	private void fileReader(File file) {
 		for (File f : file.listFiles(new FileFilter() {
 
@@ -153,35 +175,33 @@ public class TaskListView implements PidescoView {
 				fileReader(f);
 		}
 	}
-	
-	public void updateTableView(File file) {	 
-		 
+
+	public void updateTableView(File file) {
+
 		TaskManager taskManager = new TaskManager();
-		
+
 		try (BufferedReader buffer = new BufferedReader(new FileReader(file))) {
 			String line;
 			StringBuilder sb = new StringBuilder();
-			
+
 			System.out.println(file.getName());
-			
+
 			int count = 0;
 			while ((line = buffer.readLine()) != null) {
-				
-		        sb.append(line);
-		        sb.append(System.lineSeparator());
+
+				sb.append(line);
+				sb.append(System.lineSeparator());
 				count++;
-				
+
 			}
-			
-			 String everything = sb.toString();
+
+			String everything = sb.toString();
 			taskManager.findComments(everything);
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
-		}	
+		}
 
 	}
-	
-	
 
 }
