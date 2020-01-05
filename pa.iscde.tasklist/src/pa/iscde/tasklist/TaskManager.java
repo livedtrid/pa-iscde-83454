@@ -49,6 +49,8 @@ public class TaskManager {
 			match.text = commentsMatcher.group();
 			System.out.println(getLine(text, commentsMatcher.start()));
 			commentMatches.add(match);
+			
+			tasks.add(new Task());
 		}
 
 		List<Match> commentsList = new ArrayList<Match>();
@@ -102,6 +104,10 @@ public class TaskManager {
 		while (matcher.find()) {
 		    System.out.println(matcher.group(1));
 		}
+	}
+	
+	public Set<Task> getTasks(){
+		return tasks;
 	}
 	
 

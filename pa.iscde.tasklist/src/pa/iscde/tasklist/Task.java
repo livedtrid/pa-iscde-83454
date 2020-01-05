@@ -8,6 +8,15 @@ public class Task {
 	private String file;
 	private int line;
 
+	public Task(String token, String description, String project, String file, int line) {
+
+		this.token = token;
+		this.description = description;
+		this.project = project;
+		this.file = file;
+		this.line = line;
+	}
+
 	public String getToken() {
 		return token;
 	}
