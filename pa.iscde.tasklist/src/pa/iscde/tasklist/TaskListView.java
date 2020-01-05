@@ -40,7 +40,7 @@ public class TaskListView implements PidescoView {
 	private String root;
 
 	private Map<String, Set<Task>> taskList = new HashMap<String, Set<Task>>();
-	
+
 	public TaskListView() {
 		// TODO Auto-generated constructor stub
 	}
@@ -101,16 +101,7 @@ public class TaskListView implements PidescoView {
 			TableColumn column = new TableColumn(table, SWT.NONE);
 			column.setText(titles[i]);
 		}
-		
-		
-		int count = 10;
-		for (int i = 0; i < count; i++) {
-			TableItem item = new TableItem(table, SWT.NONE);
-			item.setText(0, "TODO: test");
-			item.setText(1, "Project " + projServ.getRootPackage().getName());
-			item.setText(2, projServ.getRootPackage().getFile().toString());
-			item.setText(3, "line " + i);
-		}
+
 		for (int i = 0; i < titles.length; i++) {
 			table.getColumn(i).pack();
 		}
@@ -181,7 +172,6 @@ public class TaskListView implements PidescoView {
 		}
 	}
 
-
 	public void updateTableView(File file) {
 
 		TaskManager taskManager = new TaskManager();
@@ -206,14 +196,14 @@ public class TaskListView implements PidescoView {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		taskList.put(file.getPath(), extensionsHandler.processTags(commentHandler.getTaskSet()));
+
+		taskList.put(file.getPath(), taskManager.getTasks());
 		table.removeAll();
 		saveDataInTable(taskList);
 		table.redraw();
 
 	}
-	
+
 	private void saveDataInTable(Map<String, Set<Task>> map) {
 		for (Set<Task> s : map.values())
 			for (Task t : s) {
@@ -224,8 +214,10 @@ public class TaskListView implements PidescoView {
 				item.setText(3, "line " + t.getLine());
 
 			}
-		for (int i = 0; i < 3; i++) {
-			table.getColumn(i).pack();
+		
+		for (TableColumn column : table.getColumns()) 
+		{
+			column.pack();
 		}
 	}
 

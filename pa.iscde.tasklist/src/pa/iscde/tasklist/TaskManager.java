@@ -50,7 +50,7 @@ public class TaskManager {
 			System.out.println(getLine(text, commentsMatcher.start()));
 			commentMatches.add(match);
 			
-			tasks.add(new Task());
+			tasks.add(new Task("TODO", "some task", "some project", "some file", 0));
 		}
 
 		List<Match> commentsList = new ArrayList<Match>();
