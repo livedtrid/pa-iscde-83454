@@ -14,16 +14,16 @@ import java.util.regex.Pattern;
 public class TaskManager {
 
 	static int getLine(String data, int start) {
-	    int line = 1;
-	    Pattern pattern = Pattern.compile("\n");
-	    Matcher matcher = pattern.matcher(data);
-	    matcher.region(0, start);
-	    while(matcher.find()) {
-	        line++;
-	    }
-	    return(line);
+		int line = 1;
+		Pattern pattern = Pattern.compile("\n");
+		Matcher matcher = pattern.matcher(data);
+		matcher.region(0, start);
+		while (matcher.find()) {
+			line++;
+		}
+		return (line);
 	}
-	
+
 	static class Match {
 		int start;
 		String text;
@@ -32,6 +32,7 @@ public class TaskManager {
 	private Set<Task> tasks = new HashSet<Task>();
 
 	static List<Match> commentMatches = new ArrayList<Match>();
+	static List<Integer> commentLines = new ArrayList<Integer>();
 
 	static List<String> comments = new ArrayList<String>();
 
@@ -47,10 +48,10 @@ public class TaskManager {
 			Match match = new Match();
 			match.start = commentsMatcher.start();
 			match.text = commentsMatcher.group();
-			System.out.println(getLine(text, commentsMatcher.start()));
+
+			int line = getLine(text, commentsMatcher.start());
+			commentLines.add(line);
 			commentMatches.add(match);
-			
-			tasks.add(new Task("TODO", "some task", "some project", "some file", 0));
 		}
 
 		List<Match> commentsList = new ArrayList<Match>();
@@ -71,29 +72,32 @@ public class TaskManager {
 
 		}
 
-		for (String comment : comments) {
-
-			System.out.println(comment);
-			/*
-			List<String> tokenList = extractTokens(comment, "TODO")
-			
-			
-			for (String token : tokenList) {
-
-				System.out.println(token);
-			}
-			*/
+		for (int i = 0; i < comments.size(); i++) {
+			tasks.add(new Task("TODO", comments.get(i), "some project", "some file", commentLines.get(i)));
 		}
-		
-		extractTokens();		
 
+		for (String comment : comments) {
+		//tasks.add(new Task("TODO", comment, "some project", "some file", 0));
+			System.out.println(comment);
+
+			/*
+			 * List<String> tokenList = extractTokens(comment, "TODO")
+			 * 
+			 * 
+			 * for (String token : tokenList) {
+			 * 
+			 * System.out.println(token); }
+			 */
+		}
+
+		extractTokens();
 
 	}
 
 	public void extractTokens() {
 
 		String text = "I TODO come and meet you at JOSEFININHA and all the woods";
-			List<String> tokens = new ArrayList<String>();
+		List<String> tokens = new ArrayList<String>();
 		tokens.add("TODO");
 		tokens.add("JOSEFININHA");
 
@@ -102,13 +106,12 @@ public class TaskManager {
 		Matcher matcher = pattern.matcher(text);
 
 		while (matcher.find()) {
-		    System.out.println(matcher.group(1));
+			System.out.println(matcher.group(1));
 		}
 	}
-	
-	public Set<Task> getTasks(){
+
+	public Set<Task> getTasks() {
 		return tasks;
 	}
-	
 
 }

@@ -80,6 +80,16 @@ public class TaskListView implements PidescoView {
 
 		});
 
+		String[] titles = { "Description", "Project", "File", "Line" };
+		for (int i = 0; i < titles.length; i++) {
+			TableColumn column = new TableColumn(table, SWT.NONE);
+			column.setText(titles[i]);
+		}
+
+		for (int i = 0; i < titles.length; i++) {
+			table.getColumn(i).pack();
+		}
+
 		BundleContext context = Activator.getContext();
 		ServiceReference<ProjectBrowserServices> serviceReference = context
 				.getServiceReference(ProjectBrowserServices.class);
@@ -95,16 +105,6 @@ public class TaskListView implements PidescoView {
 
 		root = projServ.getRootPackage().getFile().getPath();
 		fileReader(new File(root));
-
-		String[] titles = { "Description", "Project", "File", "Line" };
-		for (int i = 0; i < titles.length; i++) {
-			TableColumn column = new TableColumn(table, SWT.NONE);
-			column.setText(titles[i]);
-		}
-
-		for (int i = 0; i < titles.length; i++) {
-			table.getColumn(i).pack();
-		}
 
 		ServiceReference<JavaEditorServices> serviceReference2 = context.getServiceReference(JavaEditorServices.class);
 		JavaEditorServices javaServ = context.getService(serviceReference2);
@@ -205,18 +205,17 @@ public class TaskListView implements PidescoView {
 	}
 
 	private void saveDataInTable(Map<String, Set<Task>> map) {
+
 		for (Set<Task> s : map.values())
 			for (Task t : s) {
 				TableItem item = new TableItem(table, SWT.NONE);
 				item.setText(0, t.getToken().toString() + ": " + t.getDescription());
 				item.setText(1, "Project: " + t.getProject());
 				item.setText(2, t.getFile());
-				item.setText(3, "line " + t.getLine());
-
+				item.setText(3, "Line " + t.getLine());
 			}
-		
-		for (TableColumn column : table.getColumns()) 
-		{
+
+		for (TableColumn column : table.getColumns()) {
 			column.pack();
 		}
 	}
