@@ -72,12 +72,20 @@ public class TaskManager {
 
 		}
 
+		List<String> tokens = new ArrayList<String>();
+		tokens.add("TODO");
+		tokens.add("FIXME");
+		tokens.add("BUG");
 		for (int i = 0; i < comments.size(); i++) {
-			tasks.add(new Task("TODO", comments.get(i), "some project", "some file", commentLines.get(i)));
+
+			if (extractTokens(tokens, comments.get(i)) != "") {
+
+				tasks.add(new Task("TODO", comments.get(i), "some project", "some file", commentLines.get(i)));
+			}
 		}
 
 		for (String comment : comments) {
-		//tasks.add(new Task("TODO", comment, "some project", "some file", 0));
+			// tasks.add(new Task("TODO", comment, "some project", "some file", 0));
 			System.out.println(comment);
 
 			/*
@@ -90,24 +98,21 @@ public class TaskManager {
 			 */
 		}
 
-		extractTokens();
-
 	}
 
-	public void extractTokens() {
+	public String extractTokens(List<String> tokens, String text) {
 
-		String text = "I TODO come and meet you at JOSEFININHA and all the woods";
-		List<String> tokens = new ArrayList<String>();
-		tokens.add("TODO");
-		tokens.add("JOSEFININHA");
-
+		String value = "";
 		String patternString = "\\b(" + String.join("|", tokens) + ")\\b";
 		Pattern pattern = Pattern.compile(patternString);
 		Matcher matcher = pattern.matcher(text);
 
 		while (matcher.find()) {
+			value = matcher.group(1);
 			System.out.println(matcher.group(1));
 		}
+
+		return value;
 	}
 
 	public Set<Task> getTasks() {
