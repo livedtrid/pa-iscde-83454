@@ -75,7 +75,6 @@ public class TaskListView implements PidescoView {
 				// TODO Auto-generated method stub
 
 				System.out.println("OI");
-
 			}
 
 		});
