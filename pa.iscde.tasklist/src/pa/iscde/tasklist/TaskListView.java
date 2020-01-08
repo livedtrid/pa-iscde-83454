@@ -157,7 +157,7 @@ public class TaskListView implements PidescoView {
 	/**
 	 * Iterates through the root file and its children and get all java files found
 	 * 	
-	 * @param file
+	 * @param file - directory root path
 	 */
 	private void fileReader(File file) {
 		for (File f : file.listFiles(new FileFilter() {
