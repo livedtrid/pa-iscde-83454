@@ -15,5 +15,5 @@ Master in Computer Engineering
 
 ISCTE - University of Lisbon 2020
 
-[iscte-iul.pt]
+(iscte-iul.pt)
 <img src="docs/images/iscte.png" align="middle" width="1024"/>
