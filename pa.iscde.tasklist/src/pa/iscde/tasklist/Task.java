@@ -17,16 +17,8 @@ public class Task {
 		this.line = line;
 	}
 
-	public String getToken() {
-		return token;
-	}
-
 	public String getDescription() {
 		return description;
-	}
-
-	public String getProject() {
-		return project;
 	}
 
 	public String getFile() {
@@ -35,6 +27,14 @@ public class Task {
 
 	public int getLine() {
 		return line;
+	}
+
+	public String getProject() {
+		return project;
+	}
+
+	public String getToken() {
+		return token;
 	}
 
 }
