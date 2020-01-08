@@ -40,6 +40,9 @@ public class TaskListView implements PidescoView {
 	Table table;
 	private String root;
 
+	/**
+	 * String File, Set Task
+	 */
 	private Map<String, Set<Task>> taskList = new HashMap<String, Set<Task>>();
 
 	public TaskListView() {
@@ -151,7 +154,11 @@ public class TaskListView implements PidescoView {
 		 */
 	}
 
-	
+	/**
+	 * Iterates through the root file and its children and get all java files found
+	 * 	
+	 * @param file
+	 */
 	private void fileReader(File file) {
 		for (File f : file.listFiles(new FileFilter() {
 
@@ -173,6 +180,11 @@ public class TaskListView implements PidescoView {
 		}
 	}
 
+	/**
+	 * Updates the Java Tasks Table view
+	 * 
+	 * @param file
+	 */
 	public void updateTableView(File file) {
 
 		TaskManager taskManager = new TaskManager();
@@ -195,7 +207,7 @@ public class TaskListView implements PidescoView {
 				sb.append(System.lineSeparator());
 				count++;
 			}
-
+		
 			String everything = sb.toString();
 			taskManager.findComments(tokens, file, everything);
 
@@ -210,6 +222,11 @@ public class TaskListView implements PidescoView {
 
 	}
 
+	/**
+	 * Stores the Tasks on the table view
+	 * 
+	 * @param map of Tasks
+	 */
 	private void saveDataInTable(Map<String, Set<Task>> map) {
 
 		for (Set<Task> s : map.values())
