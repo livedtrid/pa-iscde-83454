@@ -5,13 +5,13 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.SafeRunner;
-import org.eclipse.e4.core.di.annotations.Execute;
+//import org.eclipse.e4.core.di.annotations.Execute;
 
 public class EvaluateContributionsHandler {
 	
     private static final String ITASKLIST_ID =
             "pa.iscde.tasklist.definition.ext";
-    @Execute
+   // @Execute
     public void execute(IExtensionRegistry registry) {
         IConfigurationElement[] config =
                 registry.getConfigurationElementsFor(ITASKLIST_ID);
