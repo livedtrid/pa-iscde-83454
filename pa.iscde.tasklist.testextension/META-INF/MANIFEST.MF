@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Testextension
+Bundle-SymbolicName: pa.iscde.tasklist.testextension;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: pa.iscde.tasklist.testextension.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ pa.iscde.tasklist.ext;bundle-version="1.0.0",
+ pa.iscde.tasklist;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: pa.iscde.tasklist.testextension
+Bundle-ActivationPolicy: lazy

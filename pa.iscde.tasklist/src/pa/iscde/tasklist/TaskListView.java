@@ -41,7 +41,7 @@ public class TaskListView implements PidescoView {
 	private String root;
 
 	/**
-	 * String File, Set Task
+	 * Store a Map of a Set of Tasks - Uses the file path to return its tasks
 	 */
 	private Map<String, Set<Task>> taskList = new HashMap<String, Set<Task>>();
 

@@ -20,6 +20,13 @@ public class TaskManager {
 	static List<Integer> commentLines = new ArrayList<Integer>();
 
 	static List<String> comments = new ArrayList<String>();
+
+	/**
+	 * 
+	 * @param data
+	 * @param start
+	 * @return
+	 */
 	static int getLine(String data, int start) {
 		int line = 1;
 		Pattern pattern = Pattern.compile("\n");
@@ -33,6 +40,13 @@ public class TaskManager {
 
 	private Set<Task> tasks = new HashSet<Task>();
 
+	/**
+	 * 
+	 * 
+	 * @param tokens List of tokens
+	 * @param text   filtered comment String
+	 * @return All text after the token
+	 */
 	public String extractTokens(List<String> tokens, String text) {
 
 		String value = "";
@@ -48,7 +62,10 @@ public class TaskManager {
 		return value;
 	}
 
-	// Metodo para encontrar os comentários e devolver as tasks
+	/**
+	 * 
+	 * Filter strings with comments
+	 */
 	public void findComments(List<String> tokens, File file, String s) {
 		String text = s;
 
@@ -93,6 +110,11 @@ public class TaskManager {
 		}
 	}
 
+	/**
+	 * Getter for all the tasks found
+	 * 
+	 * @return Set of Tasks
+	 */
 	public Set<Task> getTasks() {
 		return tasks;
 	}

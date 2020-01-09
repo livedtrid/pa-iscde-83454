@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="pa.iscde.tasklist.definition.ext">
+      <client
+            TaskName="TEST"
+            TestAction="testExtension.TestAction">
+      </client>
+   </extension>
+
+</plugin>
