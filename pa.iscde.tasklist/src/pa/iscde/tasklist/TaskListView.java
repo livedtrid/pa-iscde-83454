@@ -109,14 +109,13 @@ public class TaskListView implements PidescoView {
 		root = projServ.getRootPackage().getFile().getPath();
 		fileReader(new File(root));
 
+		//Exemplo registo JavaEditorServices
+		/*
 		ServiceReference<JavaEditorServices> serviceReference2 = context.getServiceReference(JavaEditorServices.class);
 		JavaEditorServices javaServ = context.getService(serviceReference2);
 
 		Button button = new Button(viewArea, SWT.PUSH);
 		button.setText("Description");
-
-		Button button2 = new Button(viewArea, SWT.PUSH);
-		button2.setText("Description");
 
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -128,6 +127,8 @@ public class TaskListView implements PidescoView {
 				}
 			}
 		});
+		
+		*/
 
 		/// Exemplo para utilizar extensões
 		/*
@@ -148,9 +149,6 @@ public class TaskListView implements PidescoView {
 		 * }); } catch (CoreException e1) { e1.printStackTrace(); }
 		 * 
 		 * }
-		 * 
-		 * 
-		 * 
 		 */
 	}
 
