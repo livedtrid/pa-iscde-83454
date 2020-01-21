@@ -2,11 +2,11 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="pa.iscde.tasklist.definition.ext">
-      <client
-            TaskName="TEST"
-            TestAction="testExtension.TestAction">
-      </client>
+         point="pa.iscde.tasklist.actions">
+      <action
+            class="pa.iscde.tasklist.testextension.TestExtensionPoint"
+            name="TestExtensionPoint">
+      </action>
    </extension>
 
 </plugin>

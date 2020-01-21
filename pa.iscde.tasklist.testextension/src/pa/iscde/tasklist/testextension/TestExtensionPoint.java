@@ -8,7 +8,7 @@ import pt.iscte.pidesco.projectbrowser.model.ClassElement;
  * @author livedtrid
  *
  */
-public class TestExtensionPoint implements ITaskList{
+public class TestExtensionPoint implements ITaskListAction{
 
 	@Override
 	public void action(String taskType, ClassElement e, int line) {
