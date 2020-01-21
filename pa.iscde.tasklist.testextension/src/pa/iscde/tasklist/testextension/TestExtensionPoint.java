@@ -1,6 +1,7 @@
 package pa.iscde.tasklist.testextension;
 
-import pa.iscde.tasklist.definition.*;
+import pa.iscde.tasklist.extensibility.*;
+import pt.iscte.pidesco.projectbrowser.model.ClassElement;
 
 /**
  * 
@@ -10,7 +11,7 @@ import pa.iscde.tasklist.definition.*;
 public class TestExtensionPoint implements ITaskList{
 
 	@Override
-	public void doSomething() {
+	public void action(String taskType, ClassElement e, int line) {
 		System.out.println("Moin, moin!");
 		
 	}
