@@ -8,12 +8,4 @@
             name="highlight">
       </action>
    </extension>
-   <extension
-         point="pa.iscde.tasklist.actions">
-      <action
-            class="pt.iscde.tasklist.ext.TaskListAction1"
-            name="pt.iscde.tasklist.ext.action1">
-      </action>
-   </extension>
-
 </plugin>

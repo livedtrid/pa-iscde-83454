@@ -37,6 +37,7 @@ import pa.iscde.tasklist.extensibility.ITaskListAction;
 import pt.iscte.pidesco.extensibility.PidescoView;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
 import pt.iscte.pidesco.projectbrowser.model.ClassElement;
+import pt.iscte.pidesco.projectbrowser.model.PackageElement;
 import pt.iscte.pidesco.projectbrowser.model.SourceElement;
 import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserListener;
 import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserServices;
@@ -145,7 +146,7 @@ public class TaskListView implements PidescoView {
 				b.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						ClassElement dummy = new ClassElement(null, null);
+						PackageElement dummy = projServ.getRootPackage();
 						action.run("test", dummy, 0);
 						viewArea.layout();
 					}
