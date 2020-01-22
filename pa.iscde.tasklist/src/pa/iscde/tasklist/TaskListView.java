@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -29,8 +33,10 @@ import org.eclipse.swt.widgets.TableItem;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
+import pa.iscde.tasklist.extensibility.ITaskListAction;
 import pt.iscte.pidesco.extensibility.PidescoView;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
+import pt.iscte.pidesco.projectbrowser.model.ClassElement;
 import pt.iscte.pidesco.projectbrowser.model.SourceElement;
 import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserListener;
 import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserServices;
@@ -109,52 +115,53 @@ public class TaskListView implements PidescoView {
 		root = projServ.getRootPackage().getFile().getPath();
 		fileReader(new File(root));
 
-		//Exemplo registo JavaEditorServices
+		// Exemplo registo JavaEditorServices
 		/*
-		ServiceReference<JavaEditorServices> serviceReference2 = context.getServiceReference(JavaEditorServices.class);
-		JavaEditorServices javaServ = context.getService(serviceReference2);
-
-		Button button = new Button(viewArea, SWT.PUSH);
-		button.setText("Description");
-
-		button.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				File f = javaServ.getOpenedFile();
-				if (f != null) {
-					ITextSelection sel = javaServ.getTextSelected(f);
-					new Label(viewArea, SWT.NONE).setText(sel.getText());
-					viewArea.layout();
-				}
-			}
-		});
-		
-		*/
+		 * ServiceReference<JavaEditorServices> serviceReference2 =
+		 * context.getServiceReference(JavaEditorServices.class); JavaEditorServices
+		 * javaServ = context.getService(serviceReference2);
+		 * 
+		 * Button button = new Button(viewArea, SWT.PUSH);
+		 * button.setText("Description");
+		 * 
+		 * button.addSelectionListener(new SelectionAdapter() { public void
+		 * widgetSelected(SelectionEvent e) { File f = javaServ.getOpenedFile(); if (f
+		 * != null) { ITextSelection sel = javaServ.getTextSelected(f); new
+		 * Label(viewArea, SWT.NONE).setText(sel.getText()); viewArea.layout(); } } });
+		 * 
+		 */
 
 		/// Exemplo para utilizar extensões
-		/*
-		 * IExtensionRegistry reg = Platform.getExtensionRegistry();
-		 * IConfigurationElement[] elements =
-		 * reg.getConfigurationElementsFor("pt.iscte.pidesco.demo.actions");
-		 * for(IConfigurationElement e : elements) { String name =
-		 * e.getAttribute("name"); Button b = new Button(viewArea, SWT.PUSH);
-		 * b.setText(name);
-		 * 
-		 * 
-		 * try { DemoAction action = (DemoAction) e.createExecutableExtension("class");
-		 * b.addSelectionListener(new SelectionAdapter() {
-		 * 
-		 * @Override public void widgetSelected(SelectionEvent e) {
-		 * action.run(viewArea); viewArea.layout(); }
-		 * 
-		 * }); } catch (CoreException e1) { e1.printStackTrace(); }
-		 * 
-		 * }
-		 */
+
+		IExtensionRegistry reg = Platform.getExtensionRegistry();
+		IConfigurationElement[] elements = reg.getConfigurationElementsFor("pa.iscde.tasklist.actions");
+		for (IConfigurationElement e : elements) {
+			String name = e.getAttribute("name");
+			Button b = new Button(viewArea, SWT.PUSH);
+			b.setText(name);
+
+			try {
+				ITaskListAction action = (ITaskListAction) e.createExecutableExtension("class");
+				b.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						ClassElement dummy = new ClassElement(null, null);
+						action.run("test", dummy, 0);
+						viewArea.layout();
+					}
+
+				});
+			} catch (CoreException e1) {
+				e1.printStackTrace();
+			}
+
+		}
+
 	}
 
 	/**
 	 * Iterates through the root file and its children and get all java files found
-	 * 	
+	 * 
 	 * @param file - directory root path
 	 */
 	private void fileReader(File file) {
@@ -186,7 +193,7 @@ public class TaskListView implements PidescoView {
 	public void updateTableView(File file) {
 
 		TaskManager taskManager = new TaskManager();
-		
+
 		List<String> tokens = new ArrayList<String>();
 		tokens.add("TODO");
 		tokens.add("FIXME");
@@ -205,7 +212,7 @@ public class TaskListView implements PidescoView {
 				sb.append(System.lineSeparator());
 				count++;
 			}
-		
+
 			String everything = sb.toString();
 			taskManager.findComments(tokens, file, everything);
 

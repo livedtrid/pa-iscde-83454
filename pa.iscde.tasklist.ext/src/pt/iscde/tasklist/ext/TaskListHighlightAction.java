@@ -9,8 +9,9 @@ public class TaskListHighlightAction implements ITaskListAction {
 	}
 
 	@Override
-	public void action(String taskType, ClassElement e, int line) {
+	public void run(String taskType, ClassElement e, int line) {
 		// TODO Auto-generated method stub
+		System.out.println("action run");
 		
 	}
 

@@ -5,7 +5,7 @@ import pt.iscte.pidesco.projectbrowser.model.ClassElement;
 public interface ITaskListAction {
 
 	
-	void action(String taskType, ClassElement e, int line);
+	void run(String taskType, ClassElement e, int line);
 
 	
 }
