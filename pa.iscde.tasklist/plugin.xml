@@ -11,5 +11,15 @@
             icon="tasklist.png">
       </view>
    </extension>
+   <extension
+         id="id1"
+         name="name"
+         point="pt.iscte.pidesco.tool">
+      <tool
+            class="pa.iscde.tasklist.internal.Refresh"
+            hasState="false"
+            view="pa.iscde.tasklist.taskview">
+      </tool>
+   </extension>
 
 </plugin>

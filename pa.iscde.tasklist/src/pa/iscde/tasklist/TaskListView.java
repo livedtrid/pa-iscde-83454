@@ -43,6 +43,9 @@ import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserListener;
 import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserServices;
 
 public class TaskListView implements PidescoView {
+	
+	public static final String VIEW_ID = "pa.iscde.tasklist.view";	
+	//private static final String EXT_POINT_FILTER = "pa.iscde.pidesco.projectbrowser.filter";
 
 	Table table;
 	private String root;
