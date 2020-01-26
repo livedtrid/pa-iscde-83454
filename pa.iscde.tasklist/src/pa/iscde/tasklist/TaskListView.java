@@ -26,7 +26,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -70,28 +72,17 @@ public class TaskListView implements PidescoView {
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data.heightHint = 200;
 		table.setLayoutData(data);
-		table.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseDown(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseUp(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-				System.out.println("OI");
-			}
-
-		});
+		
+		table.addListener(SWT.MouseDoubleClick, new Listener() {
+		      public void handleEvent(Event e) {
+		        
+		          TableItem[] selection = table.getSelection();
+		          
+		          System.out.println(selection[0].getText(0) + " "+ selection[0].getText(1) + " "+ selection[0].getText(2) + " "+ selection[0].getText(3) );
+		          
+		      }
+		      
+		      });
 
 		String[] titles = { "Description", "Project", "File", "Line" };
 		for (int i = 0; i < titles.length; i++) {
@@ -104,13 +95,13 @@ public class TaskListView implements PidescoView {
 		}
 
 		BundleContext context = Activator.getContext();
-		ServiceReference<ProjectBrowserServices> serviceReference = context
-				.getServiceReference(ProjectBrowserServices.class);
+		ServiceReference<ProjectBrowserServices> serviceReference = context.getServiceReference(ProjectBrowserServices.class);
 		ProjectBrowserServices projServ = context.getService(serviceReference);
 
 		projServ.addListener(new ProjectBrowserListener.Adapter() {
 			@Override
 			public void doubleClick(SourceElement element) {
+				System.out.println("element " + element.getName());
 				new Label(viewArea, SWT.NONE).setText(element.getName());
 				viewArea.layout();
 			}
@@ -208,13 +199,11 @@ public class TaskListView implements PidescoView {
 			StringBuilder sb = new StringBuilder();
 
 			System.out.println(file.getName());
-
-			int count = 0;
+		
 			while ((line = buffer.readLine()) != null) {
 
 				sb.append(line);
 				sb.append(System.lineSeparator());
-				count++;
 			}
 
 			String everything = sb.toString();
@@ -246,6 +235,7 @@ public class TaskListView implements PidescoView {
 				item.setText(1, "Project: " + t.getProject());
 				item.setText(2, t.getFile());
 				item.setText(3, "Line " + t.getLine());
+	
 			}
 
 		for (TableColumn column : table.getColumns()) {
