@@ -69,6 +69,8 @@ public class TaskManager {
 	 */
 	public void findComments(List<String> tokens, File file, String s) {
 		String text = s;
+		comments.clear();
+		commentMatches.clear();
 
 		Pattern commentsPattern = Pattern.compile("(//.*?$)|(/\\*.*?\\*/)", Pattern.MULTILINE | Pattern.DOTALL);
 		Pattern stringsPattern = Pattern.compile("(\".*?(?<!\\\\)\")");
@@ -102,6 +104,7 @@ public class TaskManager {
 
 		}
 
+		System.out.println("comments.size()" + comments.size());
 		for (int i = 0; i < comments.size(); i++) {
 
 			if (extractTokens(tokens, comments.get(i)) != "") {

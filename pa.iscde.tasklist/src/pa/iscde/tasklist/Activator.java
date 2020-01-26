@@ -4,6 +4,8 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 public class Activator implements BundleActivator {
+	
+	private static Activator instance;
 
 	private static BundleContext context;
 
@@ -12,6 +14,7 @@ public class Activator implements BundleActivator {
 	}
 
 	public void start(BundleContext bundleContext) throws Exception {
+		instance = this;
 		Activator.context = bundleContext;
 	}
 

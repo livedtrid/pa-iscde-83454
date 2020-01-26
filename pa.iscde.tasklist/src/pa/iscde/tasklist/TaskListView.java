@@ -218,6 +218,7 @@ public class TaskListView implements PidescoView {
 			}
 
 			String everything = sb.toString();
+			table.removeAll();
 			taskManager.findComments(tokens, file, everything);
 
 		} catch (IOException e) {
@@ -225,9 +226,9 @@ public class TaskListView implements PidescoView {
 		}
 
 		taskList.put(file.getPath(), taskManager.getTasks());
-		table.removeAll();
+		
 		saveDataInTable(taskList);
-		table.redraw();
+		
 
 	}
 
@@ -237,7 +238,7 @@ public class TaskListView implements PidescoView {
 	 * @param map of Tasks
 	 */
 	private void saveDataInTable(Map<String, Set<Task>> map) {
-
+	
 		for (Set<Task> s : map.values())
 			for (Task t : s) {
 				TableItem item = new TableItem(table, SWT.NONE);
@@ -250,6 +251,8 @@ public class TaskListView implements PidescoView {
 		for (TableColumn column : table.getColumns()) {
 			column.pack();
 		}
+		
+		table.redraw();
 	}
 
 }
