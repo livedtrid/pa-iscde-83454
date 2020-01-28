@@ -37,6 +37,7 @@ import org.osgi.framework.ServiceReference;
 
 import pa.iscde.tasklist.extensibility.ITaskListAction;
 import pt.iscte.pidesco.extensibility.PidescoView;
+import pt.iscte.pidesco.javaeditor.service.JavaEditorListener;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
 import pt.iscte.pidesco.projectbrowser.model.ClassElement;
 import pt.iscte.pidesco.projectbrowser.model.PackageElement;
@@ -45,9 +46,10 @@ import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserListener;
 import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserServices;
 
 public class TaskListView implements PidescoView {
-	
-	public static final String VIEW_ID = "pa.iscde.tasklist.view";	
-	//private static final String EXT_POINT_FILTER = "pa.iscde.pidesco.projectbrowser.filter";
+
+	public static final String VIEW_ID = "pa.iscde.tasklist.view";
+	// private static final String EXT_POINT_FILTER =
+	// "pa.iscde.pidesco.projectbrowser.filter";
 
 	Table table;
 	private String root;
@@ -72,17 +74,18 @@ public class TaskListView implements PidescoView {
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data.heightHint = 200;
 		table.setLayoutData(data);
-		
+
 		table.addListener(SWT.MouseDoubleClick, new Listener() {
-		      public void handleEvent(Event e) {
-		        
-		          TableItem[] selection = table.getSelection();
-		          
-		          System.out.println(selection[0].getText(0) + " "+ selection[0].getText(1) + " "+ selection[0].getText(2) + " "+ selection[0].getText(3) );
-		          
-		      }
-		      
-		      });
+			public void handleEvent(Event e) {
+
+				TableItem[] selection = table.getSelection();
+
+				System.out.println(selection[0].getText(0) + " " + selection[0].getText(1) + " "
+						+ selection[0].getText(2) + " " + selection[0].getText(3));
+
+			}
+
+		});
 
 		String[] titles = { "Description", "Project", "File", "Line" };
 		for (int i = 0; i < titles.length; i++) {
@@ -104,6 +107,34 @@ public class TaskListView implements PidescoView {
 				System.out.println("element " + element.getName());
 				new Label(viewArea, SWT.NONE).setText(element.getName());
 				viewArea.layout();
+			}
+		});
+		
+		ServiceReference<JavaEditorServices> editorServiceReference = context.getServiceReference(JavaEditorServices.class);
+		JavaEditorServices editorServ = context.getService(editorServiceReference);
+		editorServ.addListener(new JavaEditorListener() {
+
+			@Override
+			public void fileOpened(File file) {
+
+			}
+
+			@Override
+			public void fileSaved(File file) {
+				updateTableView(file);
+				
+				System.out.println("fileSaved");
+				
+			}
+
+			@Override
+			public void fileClosed(File file) {
+
+			}
+
+			@Override
+			public void selectionChanged(File file, String text, int offset, int length) {
+
 			}
 		});
 
@@ -199,7 +230,7 @@ public class TaskListView implements PidescoView {
 			StringBuilder sb = new StringBuilder();
 
 			System.out.println(file.getName());
-		
+
 			while ((line = buffer.readLine()) != null) {
 
 				sb.append(line);
@@ -215,9 +246,8 @@ public class TaskListView implements PidescoView {
 		}
 
 		taskList.put(file.getPath(), taskManager.getTasks());
-		
+
 		saveDataInTable(taskList);
-		
 
 	}
 
@@ -227,7 +257,7 @@ public class TaskListView implements PidescoView {
 	 * @param map of Tasks
 	 */
 	private void saveDataInTable(Map<String, Set<Task>> map) {
-	
+
 		for (Set<Task> s : map.values())
 			for (Task t : s) {
 				TableItem item = new TableItem(table, SWT.NONE);
@@ -235,13 +265,13 @@ public class TaskListView implements PidescoView {
 				item.setText(1, "Project: " + t.getProject());
 				item.setText(2, t.getFile());
 				item.setText(3, "Line " + t.getLine());
-	
+
 			}
 
 		for (TableColumn column : table.getColumns()) {
 			column.pack();
 		}
-		
+
 		table.redraw();
 	}
 

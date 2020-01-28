@@ -6,5 +6,6 @@ Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: pt.iscde.tasklist.ext
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: pa.iscde.tasklist;bundle-version="1.0.0"
-Import-Package: pa.iscde.tasklist.extensibility,
+Import-Package: org.osgi.framework;version="1.9.0",
+ pa.iscde.tasklist.extensibility,
  pt.iscte.pidesco.projectbrowser.model
