@@ -138,7 +138,7 @@ public class TaskListView implements PidescoView {
 				String fileID = selection[0].getText(2);
 				Set<Task> taskinhas = taskList.get(fileID);
 
-				File f = null; ////////////TODO Hack this way more
+				File f = null; //////////// TODO Hack this way more
 				int l = 0;
 				for (Task t : taskinhas) {
 
@@ -161,6 +161,7 @@ public class TaskListView implements PidescoView {
 //			public void widgetSelected(SelectionEvent e) {
 //				File f = editorServ.getOpenedFile();
 //				if (f != null) {
+//					Livedtrid
 //					ITextSelection sel = editorServ.getTextSelected(f);
 //					new Label(viewArea, SWT.NONE).setText(sel.getText());
 //					viewArea.layout();
