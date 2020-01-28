@@ -75,18 +75,6 @@ public class TaskListView implements PidescoView {
 		data.heightHint = 200;
 		table.setLayoutData(data);
 
-		table.addListener(SWT.MouseDoubleClick, new Listener() {
-			public void handleEvent(Event e) {
-
-				TableItem[] selection = table.getSelection();
-
-				System.out.println(selection[0].getText(0) + " " + selection[0].getText(1) + " "
-						+ selection[0].getText(2) + " " + selection[0].getText(3));
-
-			}
-
-		});
-
 		String[] titles = { "Description", "Project", "File", "Line" };
 		for (int i = 0; i < titles.length; i++) {
 			TableColumn column = new TableColumn(table, SWT.NONE);
@@ -98,7 +86,8 @@ public class TaskListView implements PidescoView {
 		}
 
 		BundleContext context = Activator.getContext();
-		ServiceReference<ProjectBrowserServices> serviceReference = context.getServiceReference(ProjectBrowserServices.class);
+		ServiceReference<ProjectBrowserServices> serviceReference = context
+				.getServiceReference(ProjectBrowserServices.class);
 		ProjectBrowserServices projServ = context.getService(serviceReference);
 
 		projServ.addListener(new ProjectBrowserListener.Adapter() {
@@ -109,8 +98,11 @@ public class TaskListView implements PidescoView {
 				viewArea.layout();
 			}
 		});
-		
-		ServiceReference<JavaEditorServices> editorServiceReference = context.getServiceReference(JavaEditorServices.class);
+
+		// Exemplo registo JavaEditorServices
+
+		ServiceReference<JavaEditorServices> editorServiceReference = context
+				.getServiceReference(JavaEditorServices.class);
 		JavaEditorServices editorServ = context.getService(editorServiceReference);
 		editorServ.addListener(new JavaEditorListener() {
 
@@ -122,9 +114,9 @@ public class TaskListView implements PidescoView {
 			@Override
 			public void fileSaved(File file) {
 				updateTableView(file);
-				
+
 				System.out.println("fileSaved");
-				
+
 			}
 
 			@Override
@@ -138,24 +130,46 @@ public class TaskListView implements PidescoView {
 			}
 		});
 
+		table.addListener(SWT.MouseDoubleClick, new Listener() {
+			public void handleEvent(Event e) {
+
+				TableItem[] selection = table.getSelection();
+
+				String fileID = selection[0].getText(2);
+				Set<Task> taskinhas = taskList.get(fileID);
+
+				File f = null; ////////////TODO Hack this way more
+				int l = 0;
+				for (Task t : taskinhas) {
+
+					f = t.getFile();
+					l = t.getLine();
+				}
+
+				editorServ.selectText(f, l, 0);
+				System.out.println(selection[0].getText(0) + " " + selection[0].getText(1) + " "
+						+ selection[0].getText(2) + " " + selection[0].getText(3));
+
+			}
+
+		});
+
+//		Button button = new Button(viewArea, SWT.PUSH);
+//		button.setText("Description");
+//
+//		button.addSelectionListener(new SelectionAdapter() {
+//			public void widgetSelected(SelectionEvent e) {
+//				File f = editorServ.getOpenedFile();
+//				if (f != null) {
+//					ITextSelection sel = editorServ.getTextSelected(f);
+//					new Label(viewArea, SWT.NONE).setText(sel.getText());
+//					viewArea.layout();
+//				}
+//			}
+//		});
+
 		root = projServ.getRootPackage().getFile().getPath();
 		fileReader(new File(root));
-
-		// Exemplo registo JavaEditorServices
-		/*
-		 * ServiceReference<JavaEditorServices> serviceReference2 =
-		 * context.getServiceReference(JavaEditorServices.class); JavaEditorServices
-		 * javaServ = context.getService(serviceReference2);
-		 * 
-		 * Button button = new Button(viewArea, SWT.PUSH);
-		 * button.setText("Description");
-		 * 
-		 * button.addSelectionListener(new SelectionAdapter() { public void
-		 * widgetSelected(SelectionEvent e) { File f = javaServ.getOpenedFile(); if (f
-		 * != null) { ITextSelection sel = javaServ.getTextSelected(f); new
-		 * Label(viewArea, SWT.NONE).setText(sel.getText()); viewArea.layout(); } } });
-		 * 
-		 */
 
 		/// Exemplo para utilizar extensões
 
@@ -263,7 +277,7 @@ public class TaskListView implements PidescoView {
 				TableItem item = new TableItem(table, SWT.NONE);
 				item.setText(0, t.getToken().toString() + t.getDescription());
 				item.setText(1, "Project: " + t.getProject());
-				item.setText(2, t.getFile());
+				item.setText(2, t.getFile().toString());
 				item.setText(3, "Line " + t.getLine());
 
 			}

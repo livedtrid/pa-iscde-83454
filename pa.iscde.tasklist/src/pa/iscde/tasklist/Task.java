@@ -1,11 +1,13 @@
 package pa.iscde.tasklist;
 
+import java.io.File;
+
 public class Task {
 
 	private String token;
 	private String description;
 	private String project;
-	private String file;
+	private File file;
 	private int line;
 
 	/**
@@ -17,7 +19,7 @@ public class Task {
 	 * @param file
 	 * @param line
 	 */
-	public Task(String token, String description, String project, String file, int line) {
+	public Task(String token, String description, String project, File file, int line) {
 
 		this.token = token;
 		this.description = description;
@@ -38,7 +40,7 @@ public class Task {
 	 * the java file where the task token were found
 	 * @return String file
 	 */
-	public String getFile() {
+	public File getFile() {
 		return file;
 	}
 

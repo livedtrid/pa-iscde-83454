@@ -109,7 +109,7 @@ public class TaskManager {
 
 			if (extractTokens(tokens, comments.get(i)) != "") {
 
-				tasks.add(new Task("", comments.get(i), "some project", file.getName(), commentLines.get(i)));
+				tasks.add(new Task("", comments.get(i), "some project", file, commentLines.get(i)));
 			}
 		}
 	}
