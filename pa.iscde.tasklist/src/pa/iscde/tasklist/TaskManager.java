@@ -22,9 +22,10 @@ public class TaskManager {
 	static List<String> comments = new ArrayList<String>();
 
 	/**
-	 *  Get the document line number of a given string
-	 *  https://stackoverflow.com/questions/7871007/get-line-number-within-matcher-find-using-matcher-start/26314471
-	 * @param data 
+	 * Get the document line number of a given string
+	 * https://stackoverflow.com/questions/7871007/get-line-number-within-matcher-find-using-matcher-start/26314471
+	 * 
+	 * @param data
 	 * @param start
 	 * @return
 	 */
@@ -44,6 +45,7 @@ public class TaskManager {
 	/**
 	 * Find strings with the given tokens
 	 * https://inneka.com/programming/java/how-to-find-a-whole-word-in-a-string-in-java/
+	 * 
 	 * @param tokens List of tokens
 	 * @param text   filtered comment String
 	 * @return All text after the token
@@ -68,7 +70,9 @@ public class TaskManager {
 	 * https://stackoverflow.com/questions/1657066/java-regular-expression-finding-comments-in-code/1740692
 	 */
 	public void findComments(List<String> tokens, File file, String s) {
+
 		String text = s;
+
 		comments.clear();
 		commentMatches.clear();
 
@@ -91,20 +95,26 @@ public class TaskManager {
 		Matcher stringsMatcher = stringsPattern.matcher(text);
 		while (stringsMatcher.find()) {
 			for (Match comment : commentMatches) {
-				if (comment.start > stringsMatcher.start() && comment.start < stringsMatcher.end())
+				if (comment.start > stringsMatcher.start() && comment.start < stringsMatcher.end()) {
 					commentsList.add(comment);
+				}
 			}
 		}
+
 		for (Match comment : commentsList)
 			commentMatches.remove(comment);
 
 		for (Match comment : commentMatches) {
 			String commentText = comment.text.replaceAll("(//)|(/*)", "");
+			
+			System.out.println(
+					"comment = " + comment.text + " offset" + comment.start + " comment lenght "
+							+ comment.text.length());
+			
 			comments.add(commentText);
 
 		}
 
-		System.out.println("comments.size()" + comments.size());
 		for (int i = 0; i < comments.size(); i++) {
 
 			if (extractTokens(tokens, comments.get(i)) != "") {
