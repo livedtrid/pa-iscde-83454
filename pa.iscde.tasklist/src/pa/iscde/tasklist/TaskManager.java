@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import pa.iscde.tasklist.internal.Comment;
+
 public class TaskManager {
 
 	static class Match {
@@ -19,7 +21,7 @@ public class TaskManager {
 
 	static List<Integer> commentLines = new ArrayList<Integer>();
 
-	static List<String> comments = new ArrayList<String>();
+	static List<Comment> comments = new ArrayList<Comment>();
 
 	/**
 	 * Get the document line number of a given string
@@ -101,25 +103,26 @@ public class TaskManager {
 			}
 		}
 
-		for (Match comment : commentsList)
-			commentMatches.remove(comment);
+		for (Match commentMatch : commentsList)
+			commentMatches.remove(commentMatch);
 
-		for (Match comment : commentMatches) {
-			String commentText = comment.text.replaceAll("(//)|(/*)", "");
+		for (Match commentMatch : commentMatches) {
+			String commentText = commentMatch.text.replaceAll("(//)|(/*)", "");
 			
 			System.out.println(
-					"comment = " + comment.text + " offset" + comment.start + " comment lenght "
-							+ comment.text.length());
+					"comment = " + commentMatch.text + " offset" + commentMatch.start + " comment lenght "
+							+ commentMatch.text.length());
+			Comment comment = new Comment(commentMatch.text, commentMatch.start);
 			
-			comments.add(commentText);
+			comments.add(comment);
 
 		}
 
 		for (int i = 0; i < comments.size(); i++) {
 
-			if (extractTokens(tokens, comments.get(i)) != "") {
+			if (extractTokens(tokens, comments.get(i).getText()) != "") {
 
-				tasks.add(new Task("", comments.get(i), "some project", file, commentLines.get(i)));
+				tasks.add(new Task("Task Description", comments.get(i).getText(), "Project name", file, commentLines.get(i), comments.get(i).getOffset()));
 			}
 		}
 	}

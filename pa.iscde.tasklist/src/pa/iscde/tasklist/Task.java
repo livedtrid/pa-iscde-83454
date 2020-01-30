@@ -9,6 +9,7 @@ public class Task {
 	private String project;
 	private File file;
 	private int line;
+	private int offset;
 
 	/**
 	 *  Task Object
@@ -19,13 +20,14 @@ public class Task {
 	 * @param file
 	 * @param line
 	 */
-	public Task(String token, String description, String project, File file, int line) {
+	public Task(String token, String description, String project, File file, int line, int offset) {
 
 		this.token = token;
 		this.description = description;
 		this.project = project;
 		this.file = file;
 		this.line = line;
+		this.offset = offset;
 	}
 
 	/**
@@ -66,6 +68,10 @@ public class Task {
 	 */
 	public String getToken() {
 		return token;
+	}
+
+	public int getOffset() {
+		return offset;
 	}
 
 }
