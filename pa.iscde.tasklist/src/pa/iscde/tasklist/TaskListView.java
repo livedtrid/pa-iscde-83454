@@ -89,11 +89,14 @@ public class TaskListView implements PidescoView {
 		System.out.println("projServ getRootPackage "
 				+ TaskListActivator.getInstance().getProjectBrowserServices().getRootPackage().getFile());
 
-		TaskListActivator.getInstance().getProjectBrowserServices().addListener(new ProjectBrowserListener.Adapter() {
+		TaskListActivator.getInstance().getProjectBrowserServices().addListener(new ProjectBrowserListener() {
 			@Override
 			public void doubleClick(SourceElement element) {
 				System.out.println("element " + element.getName());
-				new Label(viewArea, SWT.NONE).setText(element.getName());
+				System.out.println("element isClass " + element.isClass());
+				System.out.println("element getFile " + element.getFile());
+				System.out.println("element getParent " + element.getParent());
+				new Label(viewArea, SWT.NONE).setText(element.getName() + "Stuff");
 				viewArea.layout();
 			}
 		});
@@ -143,11 +146,16 @@ public class TaskListView implements PidescoView {
 					f = t.getFile();
 					l = t.getLine();
 				}
-
-				editorServ.selectText(f, l, 0);
-				System.out.println(selection[0].getText(0) + " " + selection[0].getText(1) + " "
+				
+				
+				
+				System.out.println(selection[0].getText() + " " + selection[0].getText(1) + " "
 						+ selection[0].getText(2) + " " + selection[0].getText(3));
 
+				Task t = (Task) selection[0].getData();
+				System.out.println("Data " + t.getDescription());
+				
+				editorServ.selectText(t.getFile(), t.getOffset(), t.getDescription().length());
 			}
 
 		});
@@ -185,6 +193,7 @@ public class TaskListView implements PidescoView {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						PackageElement dummy = TaskListActivator.getInstance().getProjectBrowserServices().getRootPackage();
+												
 						action.run("test", dummy, 0);
 						viewArea.layout();
 					}
@@ -278,6 +287,7 @@ public class TaskListView implements PidescoView {
 				item.setText(1, "Project: " + t.getProject());
 				item.setText(2, t.getFile().toString());
 				item.setText(3, "Line " + t.getLine());
+				item.setData(t);				
 
 			}
 

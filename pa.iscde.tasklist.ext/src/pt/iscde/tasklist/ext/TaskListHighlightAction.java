@@ -20,4 +20,15 @@ public class TaskListHighlightAction implements ITaskListAction {
 		
 	}
 
+	@Override
+	public void run(String taskType, ClassElement e, int line) {
+		// TODO Auto-generated method stub
+		
+		System.out.println("getFile " + e.getFile()); 
+		System.out.println("getName " + e.getName());
+		System.out.println("getParent " + e.getParent());
+	
+		
+	}
+
 }
