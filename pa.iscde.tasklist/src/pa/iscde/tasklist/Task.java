@@ -1,9 +1,11 @@
 package pa.iscde.tasklist;
 
 import java.io.File;
+import java.util.UUID;
 
 public class Task {
 
+	private UUID id;
 	private String token;
 	private String description;
 	private String project;
@@ -12,16 +14,17 @@ public class Task {
 	private int offset;
 
 	/**
-	 *  Task Object
-	 *  
+	 * Task Object
+	 * 
 	 * @param token
 	 * @param description
 	 * @param project
 	 * @param file
 	 * @param line
 	 */
-	public Task(String token, String description, String project, File file, int line, int offset) {
+	public Task(UUID id, String token, String description, String project, File file, int line, int offset) {
 
+		this.id = id;
 		this.token = token;
 		this.description = description;
 		this.project = project;
@@ -32,6 +35,7 @@ public class Task {
 
 	/**
 	 * Returns the task description
+	 * 
 	 * @return String description
 	 */
 	public String getDescription() {
@@ -40,6 +44,7 @@ public class Task {
 
 	/**
 	 * the java file where the task token were found
+	 * 
 	 * @return String file
 	 */
 	public File getFile() {
@@ -48,6 +53,7 @@ public class Task {
 
 	/**
 	 * the line where the task token were found
+	 * 
 	 * @return Integer line
 	 */
 	public int getLine() {
@@ -56,6 +62,7 @@ public class Task {
 
 	/**
 	 * it was supposed to return the project name
+	 * 
 	 * @return String project
 	 */
 	public String getProject() {
@@ -64,6 +71,7 @@ public class Task {
 
 	/**
 	 * Get the token used to describe a task
+	 * 
 	 * @return String token
 	 */
 	public String getToken() {
@@ -72,6 +80,10 @@ public class Task {
 
 	public int getOffset() {
 		return offset;
+	}
+
+	public UUID getId() {
+		return id;
 	}
 
 }

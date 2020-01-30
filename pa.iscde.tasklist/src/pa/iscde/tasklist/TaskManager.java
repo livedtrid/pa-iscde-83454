@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -121,8 +122,8 @@ public class TaskManager {
 		for (int i = 0; i < comments.size(); i++) {
 
 			if (extractTokens(tokens, comments.get(i).getText()) != "") {
-
-				tasks.add(new Task("Task Description", comments.get(i).getText(), "Project name", file, commentLines.get(i), comments.get(i).getOffset()));
+				UUID id = UUID.randomUUID();
+				tasks.add(new Task(id, "", comments.get(i).getText(), "Project name", file, commentLines.get(i), comments.get(i).getOffset()));
 			}
 		}
 	}

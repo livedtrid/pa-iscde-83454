@@ -36,6 +36,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import pa.iscde.tasklist.extensibility.ITaskListAction;
+import pa.iscde.tasklist.internal.TaskListActivator;
 import pt.iscte.pidesco.extensibility.PidescoView;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorListener;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
@@ -85,12 +86,10 @@ public class TaskListView implements PidescoView {
 			table.getColumn(i).pack();
 		}
 
-		BundleContext context = Activator.getContext();
-		ServiceReference<ProjectBrowserServices> serviceReference = context
-				.getServiceReference(ProjectBrowserServices.class);
-		ProjectBrowserServices projServ = context.getService(serviceReference);
+		System.out.println("projServ getRootPackage "
+				+ TaskListActivator.getInstance().getProjectBrowserServices().getRootPackage().getFile());
 
-		projServ.addListener(new ProjectBrowserListener.Adapter() {
+		TaskListActivator.getInstance().getProjectBrowserServices().addListener(new ProjectBrowserListener.Adapter() {
 			@Override
 			public void doubleClick(SourceElement element) {
 				System.out.println("element " + element.getName());
@@ -101,9 +100,8 @@ public class TaskListView implements PidescoView {
 
 		// Exemplo registo JavaEditorServices
 
-		ServiceReference<JavaEditorServices> editorServiceReference = context
-				.getServiceReference(JavaEditorServices.class);
-		JavaEditorServices editorServ = context.getService(editorServiceReference);
+		ServiceReference<JavaEditorServices> editorServiceReference = TaskListActivator.getContext().getServiceReference(JavaEditorServices.class);
+		JavaEditorServices editorServ = TaskListActivator.getContext().getService(editorServiceReference);
 		editorServ.addListener(new JavaEditorListener() {
 
 			@Override
@@ -169,7 +167,7 @@ public class TaskListView implements PidescoView {
 //			}
 //		});
 
-		root = projServ.getRootPackage().getFile().getPath();
+		root = TaskListActivator.getInstance().getProjectBrowserServices().getRootPackage().getFile().getPath();
 		fileReader(new File(root));
 
 		/// Exemplo para utilizar extensões
@@ -186,7 +184,7 @@ public class TaskListView implements PidescoView {
 				b.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						PackageElement dummy = projServ.getRootPackage();
+						PackageElement dummy = TaskListActivator.getInstance().getProjectBrowserServices().getRootPackage();
 						action.run("test", dummy, 0);
 						viewArea.layout();
 					}
