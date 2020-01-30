@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import pa.iscde.tasklist.extensibility.ITaskListAction;
@@ -40,11 +39,9 @@ import pa.iscde.tasklist.internal.TaskListActivator;
 import pt.iscte.pidesco.extensibility.PidescoView;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorListener;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
-import pt.iscte.pidesco.projectbrowser.model.ClassElement;
 import pt.iscte.pidesco.projectbrowser.model.PackageElement;
 import pt.iscte.pidesco.projectbrowser.model.SourceElement;
 import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserListener;
-import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserServices;
 
 public class TaskListView implements PidescoView {
 
@@ -96,14 +93,13 @@ public class TaskListView implements PidescoView {
 				System.out.println("element isClass " + element.isClass());
 				System.out.println("element getFile " + element.getFile());
 				System.out.println("element getParent " + element.getParent());
-				new Label(viewArea, SWT.NONE).setText(element.getName() + "Stuff");
-				viewArea.layout();
 			}
 		});
 
 		// Exemplo registo JavaEditorServices
 
-		ServiceReference<JavaEditorServices> editorServiceReference = TaskListActivator.getContext().getServiceReference(JavaEditorServices.class);
+		ServiceReference<JavaEditorServices> editorServiceReference = TaskListActivator.getContext()
+				.getServiceReference(JavaEditorServices.class);
 		JavaEditorServices editorServ = TaskListActivator.getContext().getService(editorServiceReference);
 		editorServ.addListener(new JavaEditorListener() {
 
@@ -114,9 +110,10 @@ public class TaskListView implements PidescoView {
 
 			@Override
 			public void fileSaved(File file) {
+				
 				updateTableView(file);
 
-				System.out.println("fileSaved");
+				System.out.println("File Saved");
 
 			}
 
@@ -136,49 +133,16 @@ public class TaskListView implements PidescoView {
 
 				TableItem[] selection = table.getSelection();
 
-				String fileID = selection[0].getText(2);
-				Set<Task> taskinhas = taskList.get(fileID);
-
-				File f = null; //////////// TODO Hack this way more
-				int l = 0;
-				for (Task t : taskinhas) {
-
-					f = t.getFile();
-					l = t.getLine();
-				}
-				
-				
-				
-				System.out.println(selection[0].getText() + " " + selection[0].getText(1) + " "
-						+ selection[0].getText(2) + " " + selection[0].getText(3));
-
 				Task t = (Task) selection[0].getData();
 				System.out.println("Data " + t.getDescription());
-				
+
 				editorServ.selectText(t.getFile(), t.getOffset(), t.getDescription().length());
 			}
 
 		});
 
-//		Button button = new Button(viewArea, SWT.PUSH);
-//		button.setText("Description");
-//
-//		button.addSelectionListener(new SelectionAdapter() {
-//			public void widgetSelected(SelectionEvent e) {
-//				File f = editorServ.getOpenedFile();
-//				if (f != null) {
-//					Livedtrid
-//					ITextSelection sel = editorServ.getTextSelected(f);
-//					new Label(viewArea, SWT.NONE).setText(sel.getText());
-//					viewArea.layout();
-//				}
-//			}
-//		});
-
 		root = TaskListActivator.getInstance().getProjectBrowserServices().getRootPackage().getFile().getPath();
 		fileReader(new File(root));
-
-		/// Exemplo para utilizar extensões
 
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 		IConfigurationElement[] elements = reg.getConfigurationElementsFor("pa.iscde.tasklist.actions");
@@ -192,8 +156,9 @@ public class TaskListView implements PidescoView {
 				b.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						PackageElement dummy = TaskListActivator.getInstance().getProjectBrowserServices().getRootPackage();
-												
+						PackageElement dummy = TaskListActivator.getInstance().getProjectBrowserServices()
+								.getRootPackage();
+
 						action.run("test", dummy, 0);
 						viewArea.layout();
 					}
@@ -284,10 +249,10 @@ public class TaskListView implements PidescoView {
 			for (Task t : s) {
 				TableItem item = new TableItem(table, SWT.NONE);
 				item.setText(0, t.getToken().toString() + t.getDescription());
-				item.setText(1, "Project: " + t.getProject());
-				item.setText(2, t.getFile().toString());
+				item.setText(1, t.getResource());
+				item.setText(2, t.getFile().getPath());
 				item.setText(3, "Line " + t.getLine());
-				item.setData(t);				
+				item.setData(t);
 
 			}
 

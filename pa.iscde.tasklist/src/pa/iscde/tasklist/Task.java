@@ -8,7 +8,7 @@ public class Task {
 	private UUID id;
 	private String token;
 	private String description;
-	private String project;
+	private String resource;
 	private File file;
 	private int line;
 	private int offset;
@@ -18,16 +18,16 @@ public class Task {
 	 * 
 	 * @param token
 	 * @param description
-	 * @param project
+	 * @param resource
 	 * @param file
 	 * @param line
 	 */
-	public Task(UUID id, String token, String description, String project, File file, int line, int offset) {
+	public Task(UUID id, String token, String description, String resource, File file, int line, int offset) {
 
 		this.id = id;
 		this.token = token;
 		this.description = description;
-		this.project = project;
+		this.resource = resource;
 		this.file = file;
 		this.line = line;
 		this.offset = offset;
@@ -63,10 +63,10 @@ public class Task {
 	/**
 	 * it was supposed to return the project name
 	 * 
-	 * @return String project
+	 * @return String resource name
 	 */
-	public String getProject() {
-		return project;
+	public String getResource() {
+		return resource;
 	}
 
 	/**
