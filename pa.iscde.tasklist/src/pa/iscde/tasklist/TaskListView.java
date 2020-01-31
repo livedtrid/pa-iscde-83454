@@ -83,12 +83,12 @@ public class TaskListView implements PidescoView {
 			table.getColumn(i).pack();
 		}
 
-		System.out.println("projServ getRootPackage "
-				+ TaskListActivator.getInstance().getProjectBrowserServices().getRootPackage().getFile());
-
 		TaskListActivator.getInstance().getProjectBrowserServices().addListener(new ProjectBrowserListener() {
 			@Override
 			public void doubleClick(SourceElement element) {
+				
+				updateTableView(element.getFile());
+			
 				System.out.println("element " + element.getName());
 				System.out.println("element isClass " + element.isClass());
 				System.out.println("element getFile " + element.getFile());

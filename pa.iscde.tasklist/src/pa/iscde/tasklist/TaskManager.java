@@ -108,13 +108,9 @@ public class TaskManager {
 			commentMatches.remove(commentMatch);
 
 		for (Match commentMatch : commentMatches) {
-			String commentText = commentMatch.text.replaceAll("(//)|(/*)", "");
-			
-			System.out.println(
-					"comment = " + commentMatch.text + " offset" + commentMatch.start + " comment lenght "
-							+ commentMatch.text.length());
-			Comment comment = new Comment(commentMatch.text, commentMatch.start);
-			
+
+			String commentText = commentMatch.text.replaceAll("(//)|(/*)(//*)|(/*)(\\*)|(/*)", "");
+			Comment comment = new Comment(commentText, commentMatch.start);
 			comments.add(comment);
 
 		}
@@ -123,7 +119,8 @@ public class TaskManager {
 
 			if (extractTokens(tokens, comments.get(i).getText()) != "") {
 				UUID id = UUID.randomUUID();
-				tasks.add(new Task(id, "", comments.get(i).getText(), "Project name", file, commentLines.get(i), comments.get(i).getOffset()));
+				tasks.add(new Task(id, "", comments.get(i).getText(), "Project name", file, commentLines.get(i),
+						comments.get(i).getOffset() + 2 /* To compensate the 2 first comment characters that was removed before*/));
 			}
 		}
 	}
