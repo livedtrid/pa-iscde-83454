@@ -30,7 +30,7 @@ public class TaskManager {
 	 * 
 	 * @param data
 	 * @param start
-	 * @return
+	 * @return the line number
 	 */
 	static int getLine(String data, int start) {
 		int line = 1;
@@ -71,7 +71,10 @@ public class TaskManager {
 	/**
 	 * Filter strings with comments
 	 * https://stackoverflow.com/questions/1657066/java-regular-expression-finding-comments-in-code/1740692
-	 */
+	 * 
+	 * @param tokens List of tokens
+	 * @param file the file where we want to find the comments
+	 */	
 	public void findComments(List<String> tokens, File file, String s) {
 
 		String text = s;

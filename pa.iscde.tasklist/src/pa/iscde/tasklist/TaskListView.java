@@ -86,9 +86,9 @@ public class TaskListView implements PidescoView {
 		TaskListActivator.getInstance().getProjectBrowserServices().addListener(new ProjectBrowserListener() {
 			@Override
 			public void doubleClick(SourceElement element) {
-				
+
 				updateTableView(element.getFile());
-			
+
 				System.out.println("element " + element.getName());
 				System.out.println("element isClass " + element.isClass());
 				System.out.println("element getFile " + element.getFile());
@@ -110,7 +110,7 @@ public class TaskListView implements PidescoView {
 
 			@Override
 			public void fileSaved(File file) {
-				
+
 				updateTableView(file);
 
 				System.out.println("File Saved");
@@ -128,42 +128,33 @@ public class TaskListView implements PidescoView {
 			}
 		});
 
-		table.addListener(SWT.MouseDoubleClick, new Listener() {
-			public void handleEvent(Event e) {
-
-				TableItem[] selection = table.getSelection();
-
-				Task t = (Task) selection[0].getData();
-				System.out.println("Data " + t.getDescription());
-
-				editorServ.selectText(t.getFile(), t.getOffset(), t.getDescription().length());
-			}
-
-		});
-
 		root = TaskListActivator.getInstance().getProjectBrowserServices().getRootPackage().getFile().getPath();
 		fileReader(new File(root));
 
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 		IConfigurationElement[] elements = reg.getConfigurationElementsFor("pa.iscde.tasklist.actions");
 		for (IConfigurationElement e : elements) {
-			String name = e.getAttribute("name");
-			Button b = new Button(viewArea, SWT.PUSH);
-			b.setText(name);
 
 			try {
 				ITaskListAction action = (ITaskListAction) e.createExecutableExtension("class");
-				b.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						PackageElement dummy = TaskListActivator.getInstance().getProjectBrowserServices()
-								.getRootPackage();
 
-						action.run("test", dummy, 0);
-						viewArea.layout();
+				table.addListener(SWT.MouseDoubleClick, new Listener() {
+					public void handleEvent(Event e) {
+
+						TableItem[] selection = table.getSelection();
+
+						Task t = (Task) selection[0].getData();
+						
+						//editorServ.selectText(t.getFile(), t.getOffset(), t.getDescription().length());
+
+						// editorServ.selectText(t.getFile(), t.getOffset(),
+						// t.getDescription().length());
+
+						action.run(t.getFile(), t.getOffset(), t.getDescription().length());
 					}
 
 				});
+
 			} catch (CoreException e1) {
 				e1.printStackTrace();
 			}
