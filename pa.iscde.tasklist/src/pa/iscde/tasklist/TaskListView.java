@@ -73,7 +73,7 @@ public class TaskListView implements PidescoView {
 		data.heightHint = 200;
 		table.setLayoutData(data);
 
-		String[] titles = { "Description", "Project", "File", "Line" };
+		String[] titles = { "Description", "Resource", "Path", "Line" };
 		for (int i = 0; i < titles.length; i++) {
 			TableColumn column = new TableColumn(table, SWT.NONE);
 			column.setText(titles[i]);

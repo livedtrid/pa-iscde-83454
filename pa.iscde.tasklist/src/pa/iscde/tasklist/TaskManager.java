@@ -122,7 +122,7 @@ public class TaskManager {
 
 			if (extractTokens(tokens, comments.get(i).getText()) != "") {
 				UUID id = UUID.randomUUID();
-				tasks.add(new Task(id, "", comments.get(i).getText(), "Project name", file, commentLines.get(i),
+				tasks.add(new Task(id, "", comments.get(i).getText(), file.getName(), file, commentLines.get(i),
 						comments.get(i).getOffset() + 2 /* To compensate the 2 first comment characters that was removed before*/));
 			}
 		}
